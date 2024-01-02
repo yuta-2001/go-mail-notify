@@ -15,7 +15,25 @@ type GraphQLRequest struct {
     Variables map[string]interface{} `json:"variables,omitempty"`
 }
 
-// get contributes count from github
+type Response struct {
+	Data struct {
+		User struct {
+			ContributionCollection struct {
+				ContributionCalendar struct {
+					TotalContributions int `json:"totalContributions"`
+					Weeks []struct {
+						ContributionDays []struct {
+							ContributionCount int `json:"contributionCount"`
+							Date string `json:"date"`
+						} `json:"contributionDays"`
+					} `json:"weeks"`
+				} `json:"contributionCalendar"`
+			} `json:"contributionsCollection"`
+		} `json:"user"`
+	} `json:"data"`
+}
+
+
 func GetContributesCount() int {
 	accessToken := os.Getenv("GITHUB_TOKEN")
 	// JSTのロケーションを取得
@@ -99,25 +117,6 @@ func GetContributesCount() int {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
-	}
-
-	// レスポンスを構造体に変換
-	type Response struct {
-		Data struct {
-			User struct {
-				ContributionCollection struct {
-					ContributionCalendar struct {
-						TotalContributions int `json:"totalContributions"`
-						Weeks []struct {
-							ContributionDays []struct {
-								ContributionCount int `json:"contributionCount"`
-								Date string `json:"date"`
-							} `json:"contributionDays"`
-						} `json:"weeks"`
-					} `json:"contributionCalendar"`
-				} `json:"contributionsCollection"`
-			} `json:"user"`
-		} `json:"data"`
 	}
 
 	var response Response
