@@ -21,7 +21,7 @@ func main() {
 	// get contributes count from github
 	contributesCount := githubhelper.GetContributesCount()
 
-	if (contributesCount > 0) {
+	if (contributesCount == 0) {
 		linehelper.SendNoCommitNotify()
 	} else {
 		println("commit")
