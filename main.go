@@ -2,6 +2,7 @@ package main
 
 import (
 	"no-commit-notify/githubhelper"
+	"no-commit-notify/linehelper"
 	"github.com/joho/godotenv"
 )
 
@@ -20,5 +21,9 @@ func main() {
 	// get contributes count from github
 	contributesCount := githubhelper.GetContributesCount()
 
-	println(contributesCount)
+	if (contributesCount > 0) {
+		linehelper.SendNoCommitNotify()
+	} else {
+		println("commit")
+	}
 }
