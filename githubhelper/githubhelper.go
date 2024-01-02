@@ -3,9 +3,9 @@ package githubhelper
 
 import (
 	"os"
+	"time"
     "bytes"
     "encoding/json"
-    "fmt"
     "io/ioutil"
     "net/http"
 )
@@ -18,6 +18,28 @@ type GraphQLRequest struct {
 // get contributes count from github
 func GetContributesCount() int {
 	accessToken := os.Getenv("GITHUB_TOKEN")
+	// JSTのロケーションを取得
+	loc, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		panic(err)
+	}
+
+	// 現在の日付と時刻をJSTで取得
+	nowJST := time.Now().In(loc)
+
+	// 現在の日付の0時0分0秒をJSTで取得
+	startOfTodayJST := time.Date(nowJST.Year(), nowJST.Month(), nowJST.Day(), 0, 0, 0, 0, loc)
+
+	// 現在の日付の23時59分59秒をJSTで取得
+	endOfTodayJST := startOfTodayJST.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
+
+	// JSTをUTCに変換
+	startOfTodayUTC := startOfTodayJST.UTC()
+	endOfTodayUTC := endOfTodayJST.UTC()
+
+	// UTCの時間をISO8601フォーマットの文字列に変換
+	startOfTodayStr := startOfTodayUTC.Format(time.RFC3339)
+	endOfTodayStr := endOfTodayUTC.Format(time.RFC3339)
 
 	url := "https://api.github.com/graphql"
 	query := `
@@ -40,8 +62,8 @@ func GetContributesCount() int {
 	// クエリの変数
 	variables := map[string]interface{}{
 		"userName": os.Getenv("GITHUB_USER"),
-		"from":     "2024-01-03T00:00:00Z",
-		"to":       "2024-01-03T11:59:59Z",
+		"from":     startOfTodayStr, // JSTの2024年1月3日の開始をUTCで表現
+		"to":       endOfTodayStr, // JSTの2024年1月3日の終了をUTCで表現
 	}
 
 	// GraphQLリクエストオブジェクトを作成
@@ -79,7 +101,37 @@ func GetContributesCount() int {
 		panic(err)
 	}
 
-	fmt.Println(string(body))
+	// レスポンスを構造体に変換
+	type Response struct {
+		Data struct {
+			User struct {
+				ContributionCollection struct {
+					ContributionCalendar struct {
+						TotalContributions int `json:"totalContributions"`
+						Weeks []struct {
+							ContributionDays []struct {
+								ContributionCount int `json:"contributionCount"`
+								Date string `json:"date"`
+							} `json:"contributionDays"`
+						} `json:"weeks"`
+					} `json:"contributionCalendar"`
+				} `json:"contributionsCollection"`
+			} `json:"user"`
+		} `json:"data"`
+	}
 
-	return 0
+	var response Response
+	if err := json.Unmarshal(body, &response); err != nil {
+		panic(err)
+	}
+
+	// レスポンスからコントリビュート数を取得
+	var contributesCount int
+	for _, week := range response.Data.User.ContributionCollection.ContributionCalendar.Weeks {
+		for _, day := range week.ContributionDays {
+			contributesCount += day.ContributionCount
+		}
+	}
+
+	return contributesCount
 }
