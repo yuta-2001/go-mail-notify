@@ -6,9 +6,10 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"strconv"
 )
 
-func SendNoCommitNotify() {
+func SendMessage(contributesCount int) {
 	fmt.Println("send no commit notify")
 
 	accessToken := os.Getenv("LINE_NOTIFY_TOKEN")
@@ -17,9 +18,16 @@ func SendNoCommitNotify() {
 	apiUrl := "https://notify-api.line.me/api/notify"
 
 	form := url.Values{}
-	form.Set("message", "草が生えてないよ！やばいよ！")
-	form.Set("stickerPackageId", "6136")
-	form.Set("stickerId", "10551382")
+
+	if contributesCount == 0 {
+		form.Set("message", "草が生えてないよ！やばいよ！")
+		form.Set("stickerPackageId", "6136")
+		form.Set("stickerId", "10551382")
+	} else {
+		form.Set("message", "草が生えてるよ！本日のコミット数は" + strconv.Itoa(contributesCount) + "だよ！")
+		form.Set("stickerPackageId", "446")
+		form.Set("stickerId", "1989")
+	}
 
 	req, err := http.NewRequest("POST", apiUrl, strings.NewReader(form.Encode()))
 	if err != nil {

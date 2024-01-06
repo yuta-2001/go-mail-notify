@@ -43,13 +43,7 @@ import (
 func HandleRequest() {
 	// get contributes count from github
 	contributesCount := githubhelper.GetContributesCount()
-
-	if (contributesCount == 0) {
-		linehelper.SendNoCommitNotify()
-		println("no commit")
-	} else {
-		println("commit")
-	}
+	linehelper.SendMessage(contributesCount)
 }
 
 func main() {
