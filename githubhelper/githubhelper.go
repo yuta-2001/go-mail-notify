@@ -36,19 +36,26 @@ type Response struct {
 
 func GetContributesCount() int {
 	accessToken := os.Getenv("GITHUB_TOKEN")
-	timezone := os.Getenv("TIMEZONE")
+	// timezone := os.Getenv("TIMEZONE")
 
-	loc, err := time.LoadLocation(timezone)
-	if err != nil {
-		panic(err)
-	}
+	// loc, err := time.LoadLocation(timezone)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	nowJST := time.Now().In(loc)
-	startOfTodayJST := time.Date(nowJST.Year(), nowJST.Month(), nowJST.Day(), 0, 0, 0, 0, loc)
-	endOfTodayJST := startOfTodayJST.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
+	// nowJST := time.Now().In(loc)
+	// startOfTodayJST := time.Date(nowJST.Year(), nowJST.Month(), nowJST.Day(), 0, 0, 0, 0, loc)
+	// endOfTodayJST := startOfTodayJST.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
 
-	startOfTodayUTC := startOfTodayJST.UTC()
-	endOfTodayUTC := endOfTodayJST.UTC()
+	// startOfTodayUTC := startOfTodayJST.UTC()
+	// endOfTodayUTC := endOfTodayJST.UTC()
+
+	// startOfTodayStr := startOfTodayUTC.Format(time.RFC3339)
+	// endOfTodayStr := endOfTodayUTC.Format(time.RFC3339)
+
+	nowUTC := time.Now().UTC()
+	startOfTodayUTC := time.Date(nowUTC.Year(), nowUTC.Month(), nowUTC.Day(), 0, 0, 0, 0, time.UTC)
+	endOfTodayUTC := startOfTodayUTC.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
 
 	startOfTodayStr := startOfTodayUTC.Format(time.RFC3339)
 	endOfTodayStr := endOfTodayUTC.Format(time.RFC3339)
