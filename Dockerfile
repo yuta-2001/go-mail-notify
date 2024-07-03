@@ -13,9 +13,9 @@ RUN go mod download && \
 
 # 本番実行用
 FROM gcr.io/distroless/static@sha256:2368c04cb307fd5244b92de95bd2bde6a7eb0eb4b9a0428cb276beeae127f118 as aws
-COPY --from=builder /functions /functions
+COPY --from=builder /workspace/go/main /main
 # entrypointはlambdaの設定で上書きされる
-ENTRYPOINT ["/functions/hello"]
+ENTRYPOINT ["/main"]
 
 # ローカル実行用
 FROM public.ecr.aws/lambda/provided:al2 as local
