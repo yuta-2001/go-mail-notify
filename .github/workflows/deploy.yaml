@@ -21,7 +21,7 @@ jobs:
       - name: Authenticate with AWS ECR
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: ap-northeast-1
+          aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
 
       - name: login ECR
@@ -38,4 +38,4 @@ jobs:
           docker build --build-arg VERSION="v1" --target aws -t no-commit-notify .
           docker tag no-commit-notify ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
           docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-          aws lambda update-function-configuration --function-name ${{ secrets.Lambda_FUNCTION_NAME }} --image-uri ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+          aws lambda update-function-configuration --function-name ${{ secrets.LAMBDA＿FUNCTION_NAME }} --image-uri ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
