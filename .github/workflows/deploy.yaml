@@ -38,4 +38,4 @@ jobs:
           docker build --build-arg VERSION="v1" --target aws -t no-commit-notify .
           docker tag no-commit-notify ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
           docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-          aws lambda update-function-configuration --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} --image-uri ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+          aws lambda update-function-code --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} --architectures arm64 --image ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
