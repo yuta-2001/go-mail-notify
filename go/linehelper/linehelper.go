@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 	"strconv"
+	"io/ioutil"
 )
 
 func SendMessage(contributesCount int) {
@@ -44,4 +45,12 @@ func SendMessage(contributesCount int) {
 		return
 	}
 	defer resp.Body.Close()
+
+	fmt.Println("Response Status:", resp.Status)
+	body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println("Error reading response body:", err)
+        return
+    }
+    fmt.Println("Response Body:", string(body))
 }
