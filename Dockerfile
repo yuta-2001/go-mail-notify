@@ -8,7 +8,7 @@ ENV ARCH="arm64"
 
 ARG VERSION
 RUN go mod download && \
-    GOOS=linux GOARCH=${ARCH} CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=${VERSION}" -o /workspace/go/main ./main.go
+    GOOS=linux GOARCH=${ARCH} CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /workspace/go/main ./main.go
 
 
 # 本番実行用
