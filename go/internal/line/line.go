@@ -4,19 +4,13 @@ import (
     "fmt"
     "net/http"
     "net/url"
-    "os"
     "strings"
     "strconv"
     "io/ioutil"
 )
 
-func SendMessage(contributesCount int) error {
+func SendMessage(contributesCount int, token string) error {
     fmt.Println("send no commit notify")
-
-    accessToken := os.Getenv("LINE_NOTIFY_TOKEN")
-    if accessToken == "" {
-        return fmt.Errorf("LINE_NOTIFY_TOKEN is not set")
-    }
 
     apiUrl := "https://notify-api.line.me/api/notify"
 
@@ -37,7 +31,7 @@ func SendMessage(contributesCount int) error {
         return fmt.Errorf("error creating request: %w", err)
     }
     req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-    req.Header.Set("Authorization", "Bearer "+accessToken)
+    req.Header.Set("Authorization", "Bearer "+token)
 
     client := &http.Client{}
     resp, err := client.Do(req)
