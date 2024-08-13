@@ -77,8 +77,6 @@ resource "aws_lambda_function" "lambda" {
 
   architectures = ["arm64"]
 
-  # kms_key_arn = var.kms_key_arn
-
   lifecycle {
     ignore_changes = [
       image_uri

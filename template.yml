@@ -14,6 +14,8 @@ Resources:
           GITHUB_USER:
           LINE_NOTIFY_TOKEN:
     Metadata:
-      Dockerfile: Dockerfile.local
+      Dockerfile: Dockerfile
       DockerContext: ./go
       DockerTag: latest
+      DockerBuildTarget: local
+
