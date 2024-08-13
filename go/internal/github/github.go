@@ -1,4 +1,4 @@
-package githubhelper
+package github
 
 
 import (

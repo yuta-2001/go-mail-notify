@@ -1,4 +1,4 @@
-package linehelper
+package line
 
 import (
     "fmt"
