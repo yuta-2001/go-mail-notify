@@ -21,12 +21,12 @@ resource "aws_iam_policy" "lambda_policy" {
     Statement = [
       {
         Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:*"
         ],
         Effect   = "Allow",
-        resources = ["arn:aws:logs:*:*:*"]
+        Resource = [
+          "arn:aws:logs:*:${local.account_id}:log-group:/aws/lambda/${aws_lambda_function.lambda.function_name}:*"
+        ]
       },
       {
         Action = [
@@ -35,7 +35,9 @@ resource "aws_iam_policy" "lambda_policy" {
           "ecr:BatchCheckLayerAvailability"
         ],
         Effect   = "Allow",
-        Resource = "*"
+        Resource = [
+          aws_ecr_repository.repository.arn
+        ]
       },
       {
         Action = [
