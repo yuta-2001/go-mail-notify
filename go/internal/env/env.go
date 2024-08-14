@@ -24,9 +24,9 @@ func GetEnv(svc *kms.KMS) (string, string, string, error) {
         return "", "", "", fmt.Errorf("GITHUB_TOKEN is empty")
     }
 
-    lineToken := os.Getenv("LINE_LIFF_TOKEN")
+    lineToken := os.Getenv("LINE_NOTIFY_TOKEN")
     if lineToken == "" {
-        return "", "", "", fmt.Errorf("LINE_LIFF_TOKEN is empty")
+        return "", "", "", fmt.Errorf("LINE_NOTIFY_TOKEN is empty")
     }
 
     if env != "local" {
