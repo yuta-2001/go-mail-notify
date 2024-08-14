@@ -3,3 +3,4 @@ main
 env.json
 .env
 .aws-sam
+.terraform
