@@ -71,11 +71,7 @@ resource "aws_lambda_function" "lambda" {
   kms_key_arn   = aws_kms_key.kms.arn
 
   environment {
-    variables = {
-      GITHUB_USER       = local.secrets.github_user
-      GITHUB_TOKEN      = local.secrets.github_token
-      LINE_NOTIFY_TOKEN = local.secrets.line_notify_token
-    }
+    variables = local.enviroment_variables
   }
 
   lifecycle {

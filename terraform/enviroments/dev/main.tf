@@ -22,7 +22,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
   account_id                = data.aws_caller_identity.current.account_id
-  region                    = "ap-northeast-1"
+  region                    = data.aws_caller_identity.current.region
   bucket_name               = "${var.project_prefix}-${local.account_id}"
   function_name             = var.project_prefix
   lambda_iam_role_name      = "${var.project_prefix}-iam-lambda-role"
@@ -31,7 +31,9 @@ locals {
   repository_name           = var.project_prefix
   image_uri                 = "${local.account_id}.dkr.ecr.${local.region}.amazonaws.com/${local.repository_name}"
   schedule_rule             = "${var.project_prefix}-schedule-rule"
-  secrets = {
+  enviroment_variables = {
+    env               = "production"
+    region            = local.region
     github_user       = "${var.github_user}"
     github_token      = "${var.github_token}"
     line_notify_token = "${var.line_notify_token}"
