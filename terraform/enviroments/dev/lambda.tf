@@ -72,9 +72,9 @@ resource "aws_lambda_function" "lambda" {
 
   environment {
     variables = {
-      GITHUB_USER       = aws_kms_ciphertext.github_user.ciphertext_blob
-      GITHUB_TOKEN      = aws_kms_ciphertext.github_token.ciphertext_blob
-      LINE_NOTIFY_TOKEN = aws_kms_ciphertext.line_notify_token.ciphertext_blob
+      GITHUB_USER       = local.secrets.github_user
+      GITHUB_TOKEN      = local.secrets.github_token
+      LINE_NOTIFY_TOKEN = local.secrets.line_notify_token
     }
   }
 
