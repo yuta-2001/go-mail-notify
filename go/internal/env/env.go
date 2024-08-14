@@ -14,19 +14,19 @@ func GetEnv(svc *kms.KMS) (string, string, string, error) {
         return "", "", "", fmt.Errorf("ENV is empty")
     }
 
-    userName := os.Getenv("GITHUB_USER")
+    userName := os.Getenv("USER_GITHUB")
     if userName == "" {
-        return "", "", "", fmt.Errorf("GITHUB_USER is empty")
+        return "", "", "", fmt.Errorf("USER_GITHUB is empty")
     }
 
-    githubToken := os.Getenv("GITHUB_TOKEN")
+    githubToken := os.Getenv("TOKEN_GITHUB")
     if githubToken == "" {
-        return "", "", "", fmt.Errorf("GITHUB_TOKEN is empty")
+        return "", "", "", fmt.Errorf("TOKEN_GITHUB is empty")
     }
 
-    lineToken := os.Getenv("LINE_NOTIFY_TOKEN")
+    lineToken := os.Getenv("TOKEN_LINE_NOTIFY")
     if lineToken == "" {
-        return "", "", "", fmt.Errorf("LINE_NOTIFY_TOKEN is empty")
+        return "", "", "", fmt.Errorf("TOKEN_LINE_NOTIFY is empty")
     }
 
     if env != "local" {
