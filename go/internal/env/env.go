@@ -14,9 +14,9 @@ func GetEnv(svc *kms.KMS) (string, string, string, error) {
         return "", "", "", fmt.Errorf("ENV is empty")
     }
 
-    userName := os.Getenv("USER_NAME")
+    userName := os.Getenv("GITHUB_USER")
     if userName == "" {
-        return "", "", "", fmt.Errorf("USER_NAME is empty")
+        return "", "", "", fmt.Errorf("GITHUB_USER is empty")
     }
 
     githubToken := os.Getenv("GITHUB_TOKEN")

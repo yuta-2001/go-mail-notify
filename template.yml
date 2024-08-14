@@ -10,6 +10,7 @@ Resources:
       PackageType: Image
       Environment:
         Variables:
+          ENV: local
           GITHUB_TOKEN:
           GITHUB_USER:
           LINE_NOTIFY_TOKEN:
