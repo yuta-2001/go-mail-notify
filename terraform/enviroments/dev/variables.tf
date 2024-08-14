@@ -1,6 +1,9 @@
 variable "project_prefix" {
   default = "no-commit-notify"
 }
+variable "enviroment" {
+  default = "production"
+}
 variable "github_user" {
   sensitive = true
 }

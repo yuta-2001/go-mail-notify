@@ -32,8 +32,7 @@ locals {
   image_uri                 = "${local.account_id}.dkr.ecr.${local.region}.amazonaws.com/${local.repository_name}"
   schedule_rule             = "${var.project_prefix}-schedule-rule"
   enviroment_variables = {
-    env               = "production"
-    region            = local.region
+    env               = "${var.enviroment}"
     github_user       = "${var.github_user}"
     github_token      = "${var.github_token}"
     line_notify_token = "${var.line_notify_token}"
