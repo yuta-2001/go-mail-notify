@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 }
 
 resource "aws_iam_role" "lambda_execution_role" {
-  name = local.lambda_iam_role_name
+  name               = local.lambda_iam_role_name
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 
@@ -23,7 +23,7 @@ resource "aws_iam_policy" "lambda_policy" {
         Action = [
           "logs:*"
         ],
-        Effect   = "Allow",
+        Effect = "Allow",
         Resource = [
           "arn:aws:logs:*:${local.account_id}:log-group:/aws/lambda/${aws_lambda_function.lambda.function_name}:*"
         ]
@@ -34,7 +34,7 @@ resource "aws_iam_policy" "lambda_policy" {
           "ecr:BatchGetImage",
           "ecr:BatchCheckLayerAvailability"
         ],
-        Effect   = "Allow",
+        Effect = "Allow",
         Resource = [
           aws_ecr_repository.repository.arn
         ]
@@ -67,15 +67,16 @@ resource "aws_lambda_function" "lambda" {
     command = ["/main"]
   }
 
+  architectures = ["arm64"]
+  kms_key_arn   = aws_kms_key.kms.arn
+
   environment {
     variables = {
-      GITHUB_USER       = "yuta-2001"
-      GITHUB_TOKEN      = ""
-      LINE_NOTIFY_TOKEN = ""
+      GITHUB_USER       = aws_kms_ciphertext.github_user.ciphertext_blob
+      GITHUB_TOKEN      = aws_kms_ciphertext.github_token.ciphertext_blob
+      LINE_NOTIFY_TOKEN = aws_kms_ciphertext.line_notify_token.ciphertext_blob
     }
   }
-
-  architectures = ["arm64"]
 
   lifecycle {
     ignore_changes = [
