@@ -52,10 +52,6 @@ func GetEnv(svc *kms.KMS) (string, string, string, error) {
 
 
 func decryptVariable(svc *kms.KMS, variable string) (string, error) {
-    if variable == "" {
-        return "", fmt.Errorf("variable is empty")
-    }
-
     v, err := base64.StdEncoding.DecodeString(variable)
     if err != nil {
         return "", err
