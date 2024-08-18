@@ -1,71 +1,40 @@
-name: Deploy to ECR and update Lambda
+name: Deploy
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'terraform/**'
+      - 'go/**'
 
 env:
   TF_VERSION: 1.9.3
 
 jobs:
-  aws-deploy:
-    name: terraform apply, push to ECR, and update Lambda function
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      id-token: write
 
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
 
-      # AWS Authentication（OIDC）
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
-
-      # Terraform setup
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
-
-      - name: Terraform fmt
-        run: terraform fmt -check
-
-      - name: Terraform init
-        run : terraform init
-
-      - name: Terraform plan
-        run: terraform plan \
-          -var "user_github=${{ secrets.USER_GITHUB }}" \
-          -var "token_github=${{ secrets.TOKEN_GITHUB }}" \
-          -var "token_line_notify=${{ secrets.TOKEN_LINE_NOTIFY }}"
-
-      - name: Terraform apply
-        run: terraform apply \
-          -auto-approve \
-          -var "user_github=${{ secrets.USER_GITHUB }}" \
-          -var "token_github=${{ secrets.TOKEN_GITHUB }}" \
-          -var "token_line_notify=${{ secrets.TOKEN_LINE_NOTIFY }}"
-
-      # push to ECR and update Lambda
-      - name: login ECR
-        uses: aws-actions/amazon-ecr-login@v1
-        id: login-ecr
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-          REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+      - name: Check diff
+        id: diff
         run: |
-          docker build --target prod -t no-commit-notify .
-          docker tag no-commit-notify ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-          aws lambda update-function-code --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} --architectures arm64 --image ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+          go_diff_count=$(git diff --name-only origin/main HEAD --relative ./go/ | wc -l)
+          terraform_diff_count=$(git diff --name-only origin/main HEAD --relative ./terraform/ | wc -l)
+
+          echo "go_diff_count=$go_diff_count" >> $GITHUB_ENV
+          echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
+
+      - name: Call Terraform workflow
+        if: ${{ env.terraform_diff_count != '0' }}
+        uses: ./.github/workflows/deploy-terraform
+        with:
+          command: apply
+
+      - name: Call Lambda workflow
+        if: ${{ env.go_diff_count != '0' }}
+        uses: ./.github/workflows/deploy-lambda
