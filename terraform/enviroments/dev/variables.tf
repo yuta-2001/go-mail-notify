@@ -4,12 +4,12 @@ variable "project_prefix" {
 variable "enviroment" {
   default = "production"
 }
-variable "github_user" {
+variable "user_github" {
   sensitive = true
 }
-variable "github_token" {
+variable "token_github" {
   sensitive = true
 }
-variable "line_notify_token" {
+variable "token_line_notify" {
   sensitive = true
 }

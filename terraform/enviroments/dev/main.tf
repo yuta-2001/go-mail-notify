@@ -34,8 +34,8 @@ locals {
   schedule_rule             = "${var.project_prefix}-schedule-rule"
   enviroment_variables = {
     env               = "${var.enviroment}"
-    github_user       = "${var.github_user}"
-    github_token      = "${var.github_token}"
-    line_notify_token = "${var.line_notify_token}"
+    user_github       = "${var.user_github}"
+    token_github      = "${var.token_github}"
+    token_line_notify = "${var.token_line_notify}"
   }
 }

@@ -59,7 +59,7 @@ resource "aws_lambda_function" "lambda" {
   function_name = local.function_name
   role          = aws_iam_role.lambda_execution_role.arn
   package_type  = "Image"
-  image_uri     = "${local.image_uri}:firstImage"
+  image_uri     = "${local.image_uri}:latest"
   timeout       = 30
   memory_size   = 128
 

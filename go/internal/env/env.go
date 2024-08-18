@@ -9,24 +9,24 @@ import (
 )
 
 func GetEnv(svc *kms.KMS) (string, string, string, error) {
-    env := os.Getenv("ENV")
+    env := os.Getenv("env")
     if env == "" {
-        return "", "", "", fmt.Errorf("ENV is empty")
+        return "", "", "", fmt.Errorf("env is empty")
     }
 
-    userName := os.Getenv("USER_GITHUB")
+    userName := os.Getenv("user_github")
     if userName == "" {
-        return "", "", "", fmt.Errorf("USER_GITHUB is empty")
+        return "", "", "", fmt.Errorf("user_github is empty")
     }
 
-    githubToken := os.Getenv("TOKEN_GITHUB")
+    githubToken := os.Getenv("token_github")
     if githubToken == "" {
-        return "", "", "", fmt.Errorf("TOKEN_GITHUB is empty")
+        return "", "", "", fmt.Errorf("token_github is empty")
     }
 
-    lineToken := os.Getenv("TOKEN_LINE_NOTIFY")
+    lineToken := os.Getenv("token_line_notify")
     if lineToken == "" {
-        return "", "", "", fmt.Errorf("TOKEN_LINE_NOTIFY is empty")
+        return "", "", "", fmt.Errorf("token_line_notify is empty")
     }
 
     if env != "local" {
