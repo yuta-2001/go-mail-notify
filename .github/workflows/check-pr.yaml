@@ -1,0 +1,20 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - main
+  
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Call Terraform workflow
+        if: ${{ env.terraform_diff_count != '0' }}
+        uses: ./.github/workflows/deploy-terraform
+        with:
+          command: plan
