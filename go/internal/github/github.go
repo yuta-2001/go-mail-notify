@@ -1,14 +1,12 @@
-package githubhelper
+package github
 
 
 import (
-    "os"
     "time"
     "bytes"
     "encoding/json"
     "io/ioutil"
     "net/http"
-    "fmt"
 )
 
 type GraphQLRequest struct {
@@ -35,12 +33,7 @@ type Response struct {
 }
 
 
-func GetContributesCount() (int, error) {
-    accessToken := os.Getenv("GITHUB_TOKEN")
-    if accessToken == "" {
-        return 0, fmt.Errorf("GITHUB_TOKEN is not set")
-    }
-
+func GetContributesCount(username string, token string) (int, error) {
     nowUTC := time.Now().UTC()
     startOfTodayUTC := time.Date(nowUTC.Year(), nowUTC.Month(), nowUTC.Day(), 0, 0, 0, 0, time.UTC)
     endOfTodayUTC := startOfTodayUTC.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
@@ -67,7 +60,7 @@ func GetContributesCount() (int, error) {
         }
     `
     variables := map[string]interface{}{
-        "userName": os.Getenv("GITHUB_USER"),
+        "userName": username,
         "from":     startOfTodayStr,
         "to":       endOfTodayStr,
     }
@@ -88,7 +81,7 @@ func GetContributesCount() (int, error) {
     }
 
     req.Header.Set("Content-Type", "application/json")
-    req.Header.Set("Authorization", "Bearer " + accessToken)
+    req.Header.Set("Authorization", "Bearer " + token)
 
     client := &http.Client{}
     resp, err := client.Do(req)

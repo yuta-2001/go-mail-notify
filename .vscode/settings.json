@@ -1,5 +1,11 @@
 {
-"editor.tabSize": 4,
-"editor.detectIndentation": false,
-"editor.insertSpaces": true
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "[go]": {
+        "editor.tabSize": 4
+    },
+    "[terraform]": {
+        "editor.tabSize": 2
+    }
 }

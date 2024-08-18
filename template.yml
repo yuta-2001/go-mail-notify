@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  GoLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./go
+      Handler: main
+      PackageType: Image
+      Environment:
+        Variables:
+          env: local
+          token_github:
+          user_github:
+          token_line_notify:
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: ./go
+      DockerTag: latest
+      DockerBuildTarget: local
+
