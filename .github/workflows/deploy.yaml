@@ -31,10 +31,10 @@ jobs:
 
       - name: Call Terraform workflow
         if: ${{ env.terraform_diff_count != '0' }}
-        uses: ./.github/workflows/deploy-terraform
+        uses: ./.github/workflows/deploy-terraform.yaml
         with:
           command: apply
 
       - name: Call Lambda workflow
         if: ${{ env.go_diff_count != '0' }}
-        uses: ./.github/workflows/deploy-lambda
+        uses: ./.github/workflows/deploy-lambda.yaml
