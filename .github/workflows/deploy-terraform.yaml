@@ -1,17 +1,11 @@
 name: terraform workflow
 
 on:
-  # workflow_call:
-  #   inputs:
-  #     command:
-  #       description: 'Terraform command'
-  #       required: true
-  #       default: 'plan'
-  #       type: choice
-  #       options:
-  #         - plan
-  #         - apply
-  #         - destroy
+  workflow_call:
+    inputs:
+      command:
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       command:
