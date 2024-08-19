@@ -27,11 +27,12 @@ jobs:
 
       - name: Push image to ECR and update Lambda function
         id: build-image
+        working-directory: go
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
           REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         run: |
-          docker build --target prod -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }} -f go/Dockerfile .
+          docker build --target prod -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }} .
           docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
           aws lambda update-function-code --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} --architectures arm64 --image ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
