@@ -4,6 +4,7 @@ import (
     "encoding/base64"
     "os"
     "fmt"
+	"strings"
 
     "github.com/aws/aws-sdk-go/service/kms"
 )
@@ -54,6 +55,7 @@ func GetEnv(svc *kms.KMS) (string, string, string, error) {
 func decryptVariable(svc *kms.KMS, variable string) (string, error) {
     v, err := base64.StdEncoding.DecodeString(variable)
     if err != nil {
+		fmt.Println("Error in decryptVariable")
         return "", err
     }
 
@@ -66,6 +68,5 @@ func decryptVariable(svc *kms.KMS, variable string) (string, error) {
         return "", err
     }
 
-    return string(result.Plaintext), nil
+    return strings.Replace(string(result.Plaintext), "\n", "", -1), nil
 }
-
