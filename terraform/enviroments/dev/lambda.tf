@@ -23,7 +23,7 @@ resource "aws_iam_policy" "lambda_policy" {
         Action = [
           "logs:*"
         ],
-        Effect = "Allow",
+        Effect   = "Allow",
         Resource = "arn:aws:logs:*:${local.account_id}:log-group:/aws/lambda/${aws_lambda_function.lambda.function_name}:*"
       },
       {
@@ -32,7 +32,7 @@ resource "aws_iam_policy" "lambda_policy" {
           "ecr:BatchGetImage",
           "ecr:BatchCheckLayerAvailability"
         ],
-        Effect = "Allow",
+        Effect   = "Allow",
         Resource = "${aws_ecr_repository.repository.arn}"
       },
       {

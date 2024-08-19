@@ -33,7 +33,7 @@ jobs:
         if: ${{ env.terraform_diff_count != '0' }}
         uses: ./.github/workflows/deploy-terraform.yaml
         with:
-          command: apply
+          command: apply -auto-approve
 
       - name: Call Lambda workflow
         if: ${{ env.go_diff_count != '0' }}
