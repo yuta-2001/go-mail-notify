@@ -1,16 +1,17 @@
-run-name: terraform workflow ${{ inputs.command }}
+name: terraform workflow ${{ inputs.command }}
 
 on:
   workflow_call:
-    # inputs:
-    #   command:
-    #     description: 'Terraform command'
-    #     required: true
-    #     default: 'plan'
-    #     options:
-    #       - plan
-    #       - apply
-    #       - destroy
+    inputs:
+      command:
+        description: 'Terraform command'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
   workflow_dispatch:
     inputs:
       command:
