@@ -60,4 +60,4 @@ jobs:
         run : terraform init
 
       - name: Terraform ${{ github.event.inputs.command }}
-        run: terraform ${{ github.event.inputs.command }}　-var "user_github=${{ secrets.USER_GITHUB }}" -var "token_github=${{ secrets.TOKEN_GITHUB }}"　-var "token_line_notify=${{ secrets.TOKEN_LINE_NOTIFY }}"
+        run: terraform ${{ github.event.inputs.command }} -var "user_github=${{ secrets.USER_GITHUB }}" -var "token_github=${{ secrets.TOKEN_GITHUB }}" -var "token_line_notify=${{ secrets.TOKEN_LINE_NOTIFY }}"
