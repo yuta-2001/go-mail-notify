@@ -25,9 +25,21 @@ resource "aws_iam_role_policy" "eventbridge_invoke_policy" {
           "lambda:InvokeFunction"
         ],
         "Effect" : "Allow",
-        "Resource" : aws_lambda_function.lambda.arn
+        "Resource" : "${aws_lambda_function.lambda.arn}"
       }
     ]
   })
 }
 
+resource "aws_scheduler_schedule" "invoke_lambda_schedule" {
+  name = "InvokeLambdaSchedule"
+  flexible_time_window {
+    mode = "OFF"
+  }
+  schedule_expression = "cron(0 21 * * ? *)"
+  target {
+    arn = "${aws_lambda_function.lambda.arn}"
+    role_arn = "${aws_iam_role.scheduler_role.arn}"
+    input = "{}"
+  }
+}

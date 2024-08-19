@@ -24,9 +24,7 @@ resource "aws_iam_policy" "lambda_policy" {
           "logs:*"
         ],
         Effect = "Allow",
-        Resource = [
-          "arn:aws:logs:*:${local.account_id}:log-group:/aws/lambda/${aws_lambda_function.lambda.function_name}:*"
-        ]
+        Resource = "arn:aws:logs:*:${local.account_id}:log-group:/aws/lambda/${aws_lambda_function.lambda.function_name}:*"
       },
       {
         Action = [
@@ -35,16 +33,14 @@ resource "aws_iam_policy" "lambda_policy" {
           "ecr:BatchCheckLayerAvailability"
         ],
         Effect = "Allow",
-        Resource = [
-          aws_ecr_repository.repository.arn
-        ]
+        Resource = "${aws_ecr_repository.repository.arn}"
       },
       {
         Action = [
           "kms:Decrypt"
         ]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "${aws_kms_key.kms.arn}"
       }
     ]
   })
