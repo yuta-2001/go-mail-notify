@@ -32,11 +32,6 @@ func GetEnv(svc *kms.KMS) (string, string, string, error) {
 
     if env != "local" {
         var err error
-        userName, err = decryptVariable(svc, userName)
-        if err != nil {
-            return "", "", "", err
-        }
-
         githubToken, err = decryptVariable(svc, githubToken)
         if err != nil {
             return "", "", "", err
