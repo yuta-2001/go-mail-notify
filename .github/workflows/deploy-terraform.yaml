@@ -21,7 +21,7 @@ on:
         type: choice
         options:
           - plan
-          - apply
+          - apply -auto-approve
           - destroy
 
 env:
@@ -57,7 +57,6 @@ jobs:
 
       - name: Terraform ${{ github.event.inputs.command }}
         run: terraform ${{ github.event.inputs.command }} \
-          -auto-approve \
           -var "user_github=${{ secrets.USER_GITHUB }}" \
           -var "token_github=${{ secrets.TOKEN_GITHUB }}" \
           -var "token_line_notify=${{ secrets.TOKEN_LINE_NOTIFY }}"
