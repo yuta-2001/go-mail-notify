@@ -1,22 +1,23 @@
-name: terraform workflow
+run-name: terraform workflow ${{ inputs.command }}
 
 on:
   workflow_call:
-    inputs:
-      command:
-        description: 'Terraform command'
-        required: true
-        default: 'plan'
-        options:
-          - plan
-          - apply
-          - destroy
+    # inputs:
+    #   command:
+    #     description: 'Terraform command'
+    #     required: true
+    #     default: 'plan'
+    #     options:
+    #       - plan
+    #       - apply
+    #       - destroy
   workflow_dispatch:
     inputs:
       command:
         description: 'Terraform command'
         required: true
         default: 'plan'
+        type: choice
         options:
           - plan
           - apply
@@ -42,7 +43,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: ${{ github.event.inputs.command }}
+          terraform_version: ${{ inputs.command }}
 
       - name: Terraform fmt
         run: terraform fmt -check
@@ -50,8 +51,8 @@ jobs:
       - name: Terraform init
         run : terraform init
 
-      - name: Terraform ${{ github.event.inputs.command }}
-        run: terraform ${{ github.event.inputs.command }} \
+      - name: Terraform ${{ inputs.command }}
+        run: terraform ${{ inputs.command }} \
           -auto-approve \
           -var "user_github=${{ secrets.USER_GITHUB }}" \
           -var "token_github=${{ secrets.TOKEN_GITHUB }}" \
