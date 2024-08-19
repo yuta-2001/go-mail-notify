@@ -1,4 +1,4 @@
-name: terraform workflow ${{ inputs.command }}
+name: terraform workflow
 
 on:
   workflow_call:
@@ -44,7 +44,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: ${{ inputs.command }}
+          terraform_version: ${{ github.event.inputs.command }}
 
       - name: Terraform fmt
         run: terraform fmt -check
@@ -52,8 +52,8 @@ jobs:
       - name: Terraform init
         run : terraform init
 
-      - name: Terraform ${{ inputs.command }}
-        run: terraform ${{ inputs.command }} \
+      - name: Terraform ${{ github.event.inputs.command }}
+        run: terraform ${{ github.event.inputs.command }} \
           -auto-approve \
           -var "user_github=${{ secrets.USER_GITHUB }}" \
           -var "token_github=${{ secrets.TOKEN_GITHUB }}" \
