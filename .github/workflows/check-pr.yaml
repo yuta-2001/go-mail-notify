@@ -21,7 +21,7 @@ jobs:
 
       - name: Call Terraform workflow
         if: ${{ env.terraform_diff_count != '0' }}
-        uses: ./.github/workflows/deploy-terraform
+        uses: ./.github/workflows/deploy-terraform.yaml
         with:
           command: plan
         secrets:
