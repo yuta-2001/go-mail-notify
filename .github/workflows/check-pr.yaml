@@ -26,6 +26,7 @@ jobs:
       id-token: write
       contents: read
     needs: check-diff
+    if: ${{ needs.check-diff.outputs.diff_count > 0 }}
     uses: ./.github/workflows/deploy-terraform.yaml
     secrets: inherit
     with:
