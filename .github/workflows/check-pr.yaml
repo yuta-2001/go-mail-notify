@@ -22,6 +22,7 @@ jobs:
       diff_count: ${{ env.diff_count }}
   
   echo-diff-count:
+    runs-on: ubuntu-latest
     needs: check-diff
     steps:
       - name: Debug diff count
