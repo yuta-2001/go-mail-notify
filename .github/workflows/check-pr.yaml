@@ -22,12 +22,6 @@ jobs:
       - name: Call Terraform workflow
         if: ${{ env.terraform_diff_count != '0' }}
         uses: ./.github/workflows/deploy-terraform.yaml
-        secrets:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
-          USER_GITHUB: ${{ secrets.USER_GITHUB }}
-          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-          TOKEN_LINE_NOTIFY: ${{ secrets.TOKEN_LINE_NOTIFY }}
+        secrets: inherit
         with:
           command: plan

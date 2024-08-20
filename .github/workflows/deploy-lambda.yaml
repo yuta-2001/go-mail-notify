@@ -2,17 +2,6 @@ name: deploy to lambda
 
 on:
   workflow_call:
-    secrets:
-      AWS_REGION:
-        required: true
-      AWS_ACCOUNT_ID:
-        required: true
-      AWS_ROLE_NAME:
-        required: true
-      ECR_REPOSITORY:
-        required: true
-      LAMBDA_FUNCTION_NAME:
-        required: true
   workflow_dispatch:
 
 jobs:

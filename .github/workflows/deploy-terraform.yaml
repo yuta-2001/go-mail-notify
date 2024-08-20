@@ -2,19 +2,6 @@ name: terraform workflow
 
 on:
   workflow_call:
-    secrets:
-      AWS_REGION:
-        required: true
-      AWS_ACCOUNT_ID:
-        required: true
-      AWS_ROLE_NAME:
-        required: true
-      USER_GITHUB:
-        required: true
-      TOKEN_GITHUB:
-        required: true
-      TOKEN_LINE_NOTIFY:
-        required: true
     inputs:
       command:
         required: true
