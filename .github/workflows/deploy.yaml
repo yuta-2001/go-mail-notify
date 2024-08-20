@@ -30,11 +30,24 @@ jobs:
           echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
 
       - name: Call Terraform workflow
-        if: ${{ env.terraform_diff_count != '0' }}
+        if: ${{ env.terraform_diff_count > 0 }}
         uses: ./.github/workflows/deploy-terraform.yaml
         with:
           command: apply -auto-approve
+        secrets:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
+          USER_GITHUB: ${{ secrets.USER_GITHUB }}
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+          TOKEN_LINE_NOTIFY: ${{ secrets.TOKEN_LINE_NOTIFY }}
 
       - name: Call Lambda workflow
-        if: ${{ env.go_diff_count != '0' }}
+        if: ${{ env.go_diff_count > 0 }}
         uses: ./.github/workflows/deploy-lambda.yaml
+        secrets:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          LAMBDA_FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME }}

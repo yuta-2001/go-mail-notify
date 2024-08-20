@@ -36,7 +36,7 @@ resource "aws_scheduler_schedule" "invoke_lambda_schedule" {
   flexible_time_window {
     mode = "OFF"
   }
-  schedule_expression = "cron(0 21 * * ? *)"
+  schedule_expression = "cron(0 12 * * ? *)"
   target {
     arn      = aws_lambda_function.lambda.arn
     role_arn = aws_iam_role.scheduler_role.arn
