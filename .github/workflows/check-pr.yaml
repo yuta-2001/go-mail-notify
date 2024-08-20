@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all branches
+        run: git fetch --all
 
       - name: Check diff
         id: diff
