@@ -20,6 +20,12 @@ jobs:
 
     outputs:
       diff_count: ${{ env.diff_count }}
+  
+  echo-diff-count:
+    needs: check-diff
+    steps:
+      - name: Debug diff count
+        run: echo "diff_count is ${{ needs.check-diff.outputs.diff_count }}"
 
   call-deploy-terraform:
     permissions:
