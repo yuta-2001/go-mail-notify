@@ -16,11 +16,15 @@ jobs:
         id: diff
         run: |
           terraform_diff_count=$(git diff --name-only origin/main HEAD --relative ./terraform/ | wc -l)
-          echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
+          echo "::set-output name=diff_count::$terraform_diff_count"
+
+    outputs:
+      diff_count: ${{ steps.diff.outputs.diff_count }}
 
   call-deploy-terraform:
     runs-on: ubuntu-latest
-    if: ${{ env.terraform_diff_count != '0' }}
+    needs: check-diff
+    if: ${{ needs.check-diff.outputs.diff_count != '0' }}
     uses: ./.github/workflows/deploy-terraform.yaml
     secrets: inherit
     with:
