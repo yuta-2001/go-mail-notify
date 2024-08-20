@@ -22,7 +22,9 @@ jobs:
       diff_count: ${{ env.diff_count }}
 
   call-deploy-terraform:
-    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     needs: check-diff
     if: ${{ needs.check-diff.outputs.diff_count > 0 }}
     uses: ./.github/workflows/deploy-terraform.yaml
