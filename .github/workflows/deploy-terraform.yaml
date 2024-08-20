@@ -6,19 +6,6 @@ on:
       command:
         required: true
         type: string
-    secrets:
-      AWS_REGION:
-        required: true
-      AWS_ACCOUNT_ID:
-        required: true
-      AWS_ROLE_NAME:
-        required: true
-      USER_GITHUB:
-        required: true
-      TOKEN_GITHUB:
-        required: true
-      TOKEN_LINE_NOTIFY:
-        required: true
   workflow_dispatch:
     inputs:
       command:
