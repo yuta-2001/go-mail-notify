@@ -6,9 +6,8 @@ on:
       - main
   
 jobs:
-  check-pr:
+  check-diff:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
@@ -19,8 +18,10 @@ jobs:
           terraform_diff_count=$(git diff --name-only origin/main HEAD --relative ./terraform/ | wc -l)
           echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
 
-      - name: Call Terraform workflow
-        uses: ./.github/workflows/deploy-terraform.yaml
-        secrets: inherit
-        with:
-          command: plan
+  call-deploy-terraform:
+    runs-on: ubuntu-latest
+    if: ${{ env.terraform_diff_count != '0' }}
+    uses: ./.github/workflows/deploy-terraform.yaml
+    secrets: inherit
+    with:
+      command: plan
