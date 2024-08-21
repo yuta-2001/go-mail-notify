@@ -27,11 +27,15 @@ jobs:
 
           echo "go_diff_count=$go_diff_count" >> $GITHUB_ENV
           echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
+
+    outputs:
+      go_diff_count: ${{ env.go_diff_count }}
+      terraform_diff_count: ${{ env.terraform_diff_count }}
   
   call-deploy-terraform:
     name: Call terraform workflow
     needs: check-diff
-    if: ${{ env.terraform_diff_count > 0 }}
+    if: ${{ needs.check-diff.outputs.terraform_diff_count > 0 }}
     uses: ./.github/workflows/deploy-terraform.yaml
     with:
       command: apply -auto-approve
@@ -40,5 +44,6 @@ jobs:
   call-deploy-lambda:
     name: Call deploy to lambda workflow
     needs: check-diff
+    if: ${{ needs.check-diff.outputs.go_diff_count > 0 }}
     uses: ./.github/workflows/deploy-lambda.yaml
     secrets: inherit
