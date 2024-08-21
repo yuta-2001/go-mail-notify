@@ -4,15 +4,19 @@ on:
   pull_request:
     branches:
       - main
-  
+
 jobs:
   check-diff:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "fetch_depth=$(( commits + 1 ))" >> $GITHUB_ENV
+        env:
+          commits: ${{ github.event.pull_request.commits }}
+
       - name: Checkout branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: ${{ env.fetch_depth }}
 
       - name: Fetch all branches
         run: git fetch --all
@@ -25,13 +29,6 @@ jobs:
 
     outputs:
       diff_count: ${{ env.diff_count }}
-  
-  echo-diff-count:
-    runs-on: ubuntu-latest
-    needs: check-diff
-    steps:
-      - name: Debug diff count
-        run: echo "diff_count is ${{ needs.check-diff.outputs.diff_count }}"
 
   call-deploy-terraform:
     permissions:
