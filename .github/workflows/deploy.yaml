@@ -34,6 +34,9 @@ jobs:
   
   call-deploy-terraform:
     name: Call terraform workflow
+    permissions:
+      id-token: write
+      contents: read
     needs: check-diff
     if: ${{ needs.check-diff.outputs.terraform_diff_count > 0 }}
     uses: ./.github/workflows/deploy-terraform.yaml
@@ -43,6 +46,9 @@ jobs:
 
   call-deploy-lambda:
     name: Call deploy to lambda workflow
+    permissions:
+      id-token: write
+      contents: read
     needs: check-diff
     if: ${{ needs.check-diff.outputs.go_diff_count > 0 }}
     uses: ./.github/workflows/deploy-lambda.yaml
