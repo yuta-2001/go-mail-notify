@@ -4,6 +4,7 @@ import (
     "encoding/base64"
     "fmt"
     "strings"
+    "os"
 
     "github.com/aws/aws-sdk-go/aws/session"
     "github.com/aws/aws-sdk-go/service/kms"
@@ -21,6 +22,11 @@ func GetKmsInstance(env string) (*KmsInstanceStruct, error) {
     if kmsInstance == nil {
         sess, err := session.NewSession()
         if env == "local" {
+            localKmsEndpoint := os.Getenv("local_kms_endpoint")
+            if localKmsEndpoint == "" {
+                return nil, fmt.Errorf("local_kms_endpoint is empty")
+            }
+
             sess, err = session.NewSession(&aws.Config{
                 Endpoint: aws.String("http://host.docker.internal:4566"),
             })
