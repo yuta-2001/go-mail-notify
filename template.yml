@@ -14,6 +14,7 @@ Resources:
           token_github:
           user_github:
           token_line_notify:
+          local_kms_endpoint: http://host.docker.internal:4566
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./go

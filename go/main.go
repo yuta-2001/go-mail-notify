@@ -4,8 +4,6 @@ import (
     "fmt"
 
     "github.com/aws/aws-lambda-go/lambda"
-    "github.com/aws/aws-sdk-go/aws/session"
-    "github.com/aws/aws-sdk-go/service/kms"
 
     "no-commit-notify/go/internal/github"
     "no-commit-notify/go/internal/line"
@@ -14,15 +12,7 @@ import (
 
 // HandleRequest is the entry point for AWS Lambda function
 func HandleRequest() {
-    
-    sess, err := session.NewSession()
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-    svc := kms.New(sess)
-
-    userName, githubToken, lineToken, err := env.GetEnv(svc)
+    userName, githubToken, lineToken, err := env.GetEnv()
     if err != nil {
         fmt.Println(err)
         return
