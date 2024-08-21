@@ -3,7 +3,7 @@
 学習継続のために作成しました。
 
 ## 構成図
-<img width="600" alt="スクリーンショット 2024-07-07 午後3 41 04" src="https://github.com/yuta-2001/go-no-commit-notify/assets/85932615/da922928-ed26-424f-850e-fe133862cff6">
+<img width="600" alt="スクリーンショット 2024-07-07 午後3 41 04" src="https://github.com/user-attachments/assets/5bb5058a-5a47-43ab-bd7d-7fe8361bdb92">
 
 ## ローカル環境実行方法
 1. asw sam cliをインストール
