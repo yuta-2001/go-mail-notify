@@ -12,13 +12,12 @@ env:
   TF_VERSION: 1.9.3
 
 jobs:
-  deploy:
-    name: Deploy
+  check-diff:
+    name: Check code diff
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Check diff
         id: diff
@@ -29,12 +28,22 @@ jobs:
           echo "go_diff_count=$go_diff_count" >> $GITHUB_ENV
           echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
 
-      - name: Call Terraform workflow
-        if: ${{ env.terraform_diff_count != '0' }}
-        uses: ./.github/workflows/deploy-terraform.yaml
-        with:
-          command: apply -auto-approve
+    outputs:
+      go_diff_count: ${{ env.go_diff_count }}
+      terraform_diff_count: ${{ env.terraform_diff_count }}
+  
+  call-deploy-terraform:
+    name: Call terraform workflow
+    needs: check-diff
+    if: ${{ needs.check-diff.outputs.terraform_diff_count > 0 }}
+    uses: ./.github/workflows/deploy-terraform.yaml
+    with:
+      command: apply -auto-approve
+    secrets: inherit
 
-      - name: Call Lambda workflow
-        if: ${{ env.go_diff_count != '0' }}
-        uses: ./.github/workflows/deploy-lambda.yaml
+  call-deploy-lambda:
+    name: Call deploy to lambda workflow
+    needs: check-diff
+    if: ${{ needs.check-diff.outputs.go_diff_count > 0 }}
+    uses: ./.github/workflows/deploy-lambda.yaml
+    secrets: inherit

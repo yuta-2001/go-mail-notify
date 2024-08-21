@@ -4,23 +4,39 @@ on:
   pull_request:
     branches:
       - main
-  
-jobs:
-  check-pr:
-    runs-on: ubuntu-latest
 
+jobs:
+  check-diff:
+    runs-on: ubuntu-latest
     steps:
+      - run: echo "fetch_depth=$(( commits + 1 ))" >> $GITHUB_ENV
+        env:
+          commits: ${{ github.event.pull_request.commits }}
+
       - name: Checkout branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ env.fetch_depth }}
+
+      - name: Fetch all branches
+        run: git fetch --all
 
       - name: Check diff
         id: diff
         run: |
           terraform_diff_count=$(git diff --name-only origin/main HEAD --relative ./terraform/ | wc -l)
-          echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
+          echo "diff_count=$terraform_diff_count" >> $GITHUB_ENV
 
-      - name: Call Terraform workflow
-        if: ${{ env.terraform_diff_count != '0' }}
-        uses: ./.github/workflows/deploy-terraform
-        with:
-          command: plan
+    outputs:
+      diff_count: ${{ env.diff_count }}
+
+  call-deploy-terraform:
+    permissions:
+      id-token: write
+      contents: read
+    needs: check-diff
+    if: ${{ needs.check-diff.outputs.diff_count > 0 }}
+    uses: ./.github/workflows/deploy-terraform.yaml
+    secrets: inherit
+    with:
+      command: plan
