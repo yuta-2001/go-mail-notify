@@ -49,3 +49,4 @@ func SendMessage(contributesCount int, token string) error {
 
     return nil
 }
+

@@ -27,8 +27,9 @@ jobs:
       - name: Check diff
         id: diff
         run: |
-          go_diff_count=$(git diff --name-only origin/main HEAD --relative ./go/ | wc -l)
-          terraform_diff_count=$(git diff --name-only origin/main HEAD --relative ./terraform/ | wc -l)
+          base_ref=$(git merge-base HEAD origin/main)
+          go_diff_count=$(git diff --name-only $base_ref HEAD --relative ./go/ | wc -l)
+          terraform_diff_count=$(git diff --name-only $base_ref HEAD --relative ./terraform/ | wc -l)
 
           echo "go_diff_count=$go_diff_count" >> $GITHUB_ENV
           echo "terraform_diff_count=$terraform_diff_count" >> $GITHUB_ENV
