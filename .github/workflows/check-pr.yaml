@@ -36,7 +36,7 @@ jobs:
       contents: read
     needs: check-diff
     if: ${{ needs.check-diff.outputs.diff_count > 0 }}
-    uses: ./.github/workflows/deploy-terraform.yaml
+    uses: ./.github/workflows/terraform-command.yaml
     secrets: inherit
     with:
       command: plan
