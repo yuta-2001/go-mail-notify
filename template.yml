@@ -10,11 +10,11 @@ Resources:
       PackageType: Image
       Environment:
         Variables:
-          env: local
-          github_token_param_name: /no-commit-notify/github_token
-          github_user: yuta-2001
-          line_notify_token_param_name: /no-commit-notify/line_notify_token
-          local_kms_endpoint: http://host.docker.internal:4566
+          ENV: local
+          GITHUB_TOKEN_PARAM_NAME: /no-commit-notify/github_token
+          GITHUB_USER: yuta-2001
+          LINE_NOTIFY_TOKEN_PARAM_NAME: /no-commit-notify/line_notify_token
+          LOCAL_KMS_ENDPOINT: http://host.docker.internal:4566
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./go
