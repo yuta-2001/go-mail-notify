@@ -35,11 +35,11 @@ resource "aws_iam_policy" "lambda_policy" {
         Effect   = "Allow",
         Resource = "${aws_ecr_repository.repository.arn}"
       },
-      { 
+      {
         Action = [
           "ssm:GetParameter"
         ],
-        Effect   = "Allow",
+        Effect = "Allow",
         Resource = [
           "${aws_ssm_parameter.token_github.arn}",
           "${aws_ssm_parameter.token_line_notify.arn}"
