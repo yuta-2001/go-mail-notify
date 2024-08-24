@@ -9,7 +9,7 @@
 - golang
 - aws (sam, eventbridge, ecr, lambda, iam, kms)
 - terraform
-- docker
+- docker (localstack起動)
 - github actions
 - line notify api, github api
 
