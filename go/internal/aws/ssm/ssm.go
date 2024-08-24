@@ -54,3 +54,4 @@ func (SsmInstance *SsmInstanceStruct)GetParamValue(param string, decrypt bool) (
 
     return *result.Parameter.Value, nil
 }
+
