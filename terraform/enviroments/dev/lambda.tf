@@ -37,10 +37,20 @@ resource "aws_iam_policy" "lambda_policy" {
       },
       {
         Action = [
+          "ssm:GetParameter"
+        ],
+        Effect = "Allow",
+        Resource = [
+          "${aws_ssm_parameter.github_token.arn}",
+          "${aws_ssm_parameter.line_notify_token.arn}"
+        ]
+      },
+      {
+        Action = [
           "kms:Decrypt"
         ]
         Effect   = "Allow"
-        Resource = "${aws_kms_key.kms.arn}"
+        Resource = "*"
       }
     ]
   })
@@ -64,7 +74,6 @@ resource "aws_lambda_function" "lambda" {
   }
 
   architectures = ["arm64"]
-  kms_key_arn   = aws_kms_key.kms.arn
 
   environment {
     variables = local.enviroment_variables

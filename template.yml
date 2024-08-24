@@ -11,9 +11,9 @@ Resources:
       Environment:
         Variables:
           env: local
-          token_github:
-          user_github:
-          token_line_notify:
+          github_token_param_name: /no-commit-notify/github_token
+          github_user: yuta-2001
+          line_notify_token_param_name: /no-commit-notify/line_notify_token
           local_kms_endpoint: http://host.docker.internal:4566
     Metadata:
       Dockerfile: Dockerfile

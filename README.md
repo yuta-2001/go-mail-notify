@@ -3,7 +3,7 @@
 学習継続のために作成しました。
 
 ## 構成図
-<img width="600" alt="スクリーンショット 2024-07-07 午後3 41 04" src="https://github.com/user-attachments/assets/5bb5058a-5a47-43ab-bd7d-7fe8361bdb92">
+<img width="786" alt="構成図" src="https://github.com/user-attachments/assets/aac634d4-098a-4d50-89b9-2fd8cec68350">
 
 ## 使用技術
 - golang

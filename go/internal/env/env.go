@@ -4,42 +4,52 @@ import (
     "os"
     "fmt"
 
-    "no-commit-notify/go/internal/kms"
+    "no-commit-notify/go/internal/aws/ssm"
 )
 
 func GetEnv() (string, string, string, error) {
-    env := os.Getenv("env")
-    if env == "" {
-        return "", "", "", fmt.Errorf("env is empty")
-    }
-
-    userName := os.Getenv("user_github")
-    if userName == "" {
-        return "", "", "", fmt.Errorf("user_github is empty")
-    }
-
-    kmsInstance, err := kms.GetKmsInstance(env)
+    env, err := fetchEnvVar("env")
     if err != nil {
         return "", "", "", err
     }
 
-    githubToken := os.Getenv("token_github")
-    if githubToken == "" {
-        return "", "", "", fmt.Errorf("token_github is empty")
-    }
-    githubToken, err = kmsInstance.DecryptVariable(githubToken)
+    userName, err := fetchEnvVar("github_user")
     if err != nil {
         return "", "", "", err
     }
 
-    lineToken := os.Getenv("token_line_notify")
-    if lineToken == "" {
-        return "", "", "", fmt.Errorf("token_line_notify is empty")
+    githubTokenParam, err := fetchEnvVar("github_token_param_name")
+    if err != nil {
+        return "", "", "", err
     }
-    lineToken, err = kmsInstance.DecryptVariable(lineToken)
+
+    lineTokenParam, err := fetchEnvVar("line_notify_token_param_name")
+    if err != nil {
+        return "", "", "", err
+    }
+
+    ssmInstance, err := ssm.GetSsmInstance(env)
+    if err != nil {
+        return "", "", "", err
+    }
+
+    githubToken , err := ssmInstance.GetParamValue(githubTokenParam, true)
+    if err != nil {
+        return "", "", "", err
+    }
+
+    lineToken , err := ssmInstance.GetParamValue(lineTokenParam, true)
     if err != nil {
         return "", "", "", err
     }
 
     return userName, githubToken, lineToken, nil
+}
+
+func fetchEnvVar(varName string) (string, error) {
+    value := os.Getenv(varName)
+    if value == "" {
+        return "", fmt.Errorf("%s is empty", varName)
+    }
+    return value, nil
 }

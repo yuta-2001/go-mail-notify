@@ -18,8 +18,8 @@ jobs:
         with:
           fetch-depth: ${{ env.fetch_depth }}
 
-      - name: Fetch all branches
-        run: git fetch --all
+      - name: Fetch main branches
+        run: git fetch origin main
 
       - name: Check diff
         id: diff
