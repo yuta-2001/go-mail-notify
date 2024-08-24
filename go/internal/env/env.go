@@ -8,22 +8,22 @@ import (
 )
 
 func GetEnv() (string, string, string, error) {
-    env, err := fetchEnvVar("env")
+    env, err := fetchEnvVar("ENV")
     if err != nil {
         return "", "", "", err
     }
 
-    userName, err := fetchEnvVar("github_user")
+    userName, err := fetchEnvVar("GITHUB_USER")
     if err != nil {
         return "", "", "", err
     }
 
-    githubTokenParam, err := fetchEnvVar("github_token_param_name")
+    githubTokenParam, err := fetchEnvVar("GITHUB_TOKEN_PARAM_NAME")
     if err != nil {
         return "", "", "", err
     }
 
-    lineTokenParam, err := fetchEnvVar("line_notify_token_param_name")
+    lineTokenParam, err := fetchEnvVar("LINE_NOTIFY_TOKEN_PARAM_NAME")
     if err != nil {
         return "", "", "", err
     }
