@@ -19,6 +19,9 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v4
 
+      - name: Fetch main branches
+        run: git fetch origin main
+
       - name: Check diff
         id: diff
         run: |
