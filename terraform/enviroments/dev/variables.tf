@@ -7,9 +7,3 @@ variable "enviroment" {
 variable "user_github" {
   sensitive = true
 }
-variable "token_github" {
-  sensitive = true
-}
-variable "token_line_notify" {
-  sensitive = true
-}

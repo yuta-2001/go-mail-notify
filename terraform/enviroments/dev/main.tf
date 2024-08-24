@@ -35,7 +35,7 @@ locals {
   enviroment_variables = {
     env               = "${var.enviroment}"
     user_github       = "${var.user_github}"
-    token_github      = "${var.token_github}"
-    token_line_notify = "${var.token_line_notify}"
+    token_github_param_name      = "/${var.project_prefix}/token_github"
+    token_line_notify_param_name = "/${var.project_prefix}/token_line_notify"
   }
 }
