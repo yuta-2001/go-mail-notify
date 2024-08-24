@@ -41,8 +41,8 @@ resource "aws_iam_policy" "lambda_policy" {
         ],
         Effect = "Allow",
         Resource = [
-          "${aws_ssm_parameter.token_github.arn}",
-          "${aws_ssm_parameter.token_line_notify.arn}"
+          "${aws_ssm_parameter.github_token.arn}",
+          "${aws_ssm_parameter.line_notify_token.arn}"
         ]
       },
       {
