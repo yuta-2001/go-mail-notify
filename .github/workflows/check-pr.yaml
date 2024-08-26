@@ -40,3 +40,12 @@ jobs:
     secrets: inherit
     with:
       command: plan
+
+  hadolint-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ./go/Dockerfile
+          failure-threshold: warning

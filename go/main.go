@@ -5,9 +5,9 @@ import (
 
     "github.com/aws/aws-lambda-go/lambda"
 
+    "no-commit-notify/go/internal/env"
     "no-commit-notify/go/internal/github"
     "no-commit-notify/go/internal/line"
-    "no-commit-notify/go/internal/env"
 )
 
 // HandleRequest is the entry point for AWS Lambda function

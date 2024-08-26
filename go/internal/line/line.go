@@ -2,11 +2,11 @@ package line
 
 import (
     "fmt"
+    "io/ioutil"
     "net/http"
     "net/url"
-    "strings"
     "strconv"
-    "io/ioutil"
+    "strings"
 )
 
 func SendMessage(contributesCount int, token string) error {
@@ -21,7 +21,7 @@ func SendMessage(contributesCount int, token string) error {
         form.Set("stickerPackageId", "6136")
         form.Set("stickerId", "10551382")
     } else {
-        form.Set("message", "草が生えてるよ！本日のコミット数は" + strconv.Itoa(contributesCount) + "だよ！")
+        form.Set("message", "草が生えてるよ！本日のコミット数は"+strconv.Itoa(contributesCount)+"だよ！")
         form.Set("stickerPackageId", "446")
         form.Set("stickerId", "1989")
     }
@@ -49,4 +49,3 @@ func SendMessage(contributesCount int, token string) error {
 
     return nil
 }
-
