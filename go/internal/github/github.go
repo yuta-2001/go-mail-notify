@@ -17,42 +17,30 @@ type Response struct {
     Data struct {
         User struct {
             ContributionCollection struct {
-                ContributionCalendar struct {
-                    TotalContributions int `json:"totalContributions"`
-                    Weeks              []struct {
-                        ContributionDays []struct {
-                            ContributionCount int    `json:"contributionCount"`
-                            Date              string `json:"date"`
-                        } `json:"contributionDays"`
-                    } `json:"weeks"`
-                } `json:"contributionCalendar"`
+                TotalContributions int `json:"totalContributions"`
             } `json:"contributionCollection"`
         } `json:"user"`
     } `json:"data"`
 }
 
 func GetContributesCount(username string, token string) (int, error) {
-    nowUTC := time.Now().UTC()
-    startOfTodayUTC := time.Date(nowUTC.Year(), nowUTC.Month(), nowUTC.Day(), 0, 0, 0, 0, time.UTC)
-    endOfTodayUTC := startOfTodayUTC.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
+    // 日本標準時（JST）を取得
+    nowJST := time.Now().In(time.FixedZone("JST", 9*60*60))
+    // その日の開始時刻（JST）
+    startOfTodayJST := time.Date(nowJST.Year(), nowJST.Month(), nowJST.Day(), 0, 0, 0, 0, nowJST.Location())
+    // その日の終了時刻（JST）
+    endOfTodayJST := startOfTodayJST.Add(23*time.Hour + 59*time.Minute + 59*time.Second)
 
-    startOfTodayStr := startOfTodayUTC.Format(time.RFC3339)
-    endOfTodayStr := endOfTodayUTC.Format(time.RFC3339)
+    // UTCに変換してISO 8601形式にフォーマット
+    startOfTodayStr := startOfTodayJST.UTC().Format(time.RFC3339)
+    endOfTodayStr := endOfTodayJST.UTC().Format(time.RFC3339)
 
     url := "https://api.github.com/graphql"
     query := `
         query($userName: String!, $from: DateTime!, $to: DateTime!) {
             user(login: $userName) {
                 contributionsCollection(from: $from, to: $to) {
-                    contributionCalendar {
-                        totalContributions
-                        weeks {
-                            contributionDays {
-                                contributionCount
-                                date
-                            }
-                        }
-                    }
+                    totalContributions
                 }
             }
         }
@@ -98,12 +86,7 @@ func GetContributesCount(username string, token string) (int, error) {
         return 0, err
     }
 
-    var contributesCount int
-    for _, week := range response.Data.User.ContributionCollection.ContributionCalendar.Weeks {
-        for _, day := range week.ContributionDays {
-            contributesCount += day.ContributionCount
-        }
-    }
+    contributesCount := response.Data.User.ContributionCollection.TotalContributions
 
     return contributesCount, nil
 }
