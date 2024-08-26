@@ -17,7 +17,7 @@ type Response struct {
     Data struct {
         User struct {
             ContributionCollection struct {
-                TotalContributions int `json:"totalContributions"`
+                TotalCommitContributions int `json:"totalCommitContributions"`
             } `json:"contributionCollection"`
         } `json:"user"`
     } `json:"data"`
@@ -40,7 +40,7 @@ func GetContributesCount(username string, token string) (int, error) {
         query($userName: String!, $from: DateTime!, $to: DateTime!) {
             user(login: $userName) {
                 contributionsCollection(from: $from, to: $to) {
-                    totalContributions
+                    totalCommitContributions
                 }
             }
         }
@@ -86,7 +86,7 @@ func GetContributesCount(username string, token string) (int, error) {
         return 0, err
     }
 
-    contributesCount := response.Data.User.ContributionCollection.TotalContributions
+    contributesCount := response.Data.User.ContributionCollection.TotalCommitContributions
 
     return contributesCount, nil
 }
