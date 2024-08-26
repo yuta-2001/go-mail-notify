@@ -1,8 +1,8 @@
 package env
 
 import (
-    "os"
     "fmt"
+    "os"
 
     "no-commit-notify/go/internal/aws/ssm"
 )
@@ -33,12 +33,12 @@ func GetEnv() (string, string, string, error) {
         return "", "", "", err
     }
 
-    githubToken , err := ssmInstance.GetParamValue(githubTokenParam, true)
+    githubToken, err := ssmInstance.GetParamValue(githubTokenParam, true)
     if err != nil {
         return "", "", "", err
     }
 
-    lineToken , err := ssmInstance.GetParamValue(lineTokenParam, true)
+    lineToken, err := ssmInstance.GetParamValue(lineTokenParam, true)
     if err != nil {
         return "", "", "", err
     }

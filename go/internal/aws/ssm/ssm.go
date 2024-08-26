@@ -40,8 +40,7 @@ func GetSsmInstance(env string) (*SsmInstanceStruct, error) {
     return SsmInstance, nil
 }
 
-
-func (SsmInstance *SsmInstanceStruct)GetParamValue(param string, decrypt bool) (string, error) {
+func (SsmInstance *SsmInstanceStruct) GetParamValue(param string, decrypt bool) (string, error) {
     input := &ssm.GetParameterInput{
         Name:           aws.String(param),
         WithDecryption: aws.Bool(decrypt),
@@ -54,4 +53,3 @@ func (SsmInstance *SsmInstanceStruct)GetParamValue(param string, decrypt bool) (
 
     return *result.Parameter.Value, nil
 }
-

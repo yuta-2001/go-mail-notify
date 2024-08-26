@@ -1,12 +1,11 @@
 package github
 
-
 import (
-    "time"
     "bytes"
     "encoding/json"
     "io/ioutil"
     "net/http"
+    "time"
 )
 
 type GraphQLRequest struct {
@@ -20,7 +19,7 @@ type Response struct {
             ContributionCollection struct {
                 ContributionCalendar struct {
                     TotalContributions int `json:"totalContributions"`
-                    Weeks []struct {
+                    Weeks              []struct {
                         ContributionDays []struct {
                             ContributionCount int    `json:"contributionCount"`
                             Date              string `json:"date"`
@@ -31,7 +30,6 @@ type Response struct {
         } `json:"user"`
     } `json:"data"`
 }
-
 
 func GetContributesCount(username string, token string) (int, error) {
     nowUTC := time.Now().UTC()
@@ -81,7 +79,7 @@ func GetContributesCount(username string, token string) (int, error) {
     }
 
     req.Header.Set("Content-Type", "application/json")
-    req.Header.Set("Authorization", "Bearer " + token)
+    req.Header.Set("Authorization", "Bearer "+token)
 
     client := &http.Client{}
     resp, err := client.Do(req)
